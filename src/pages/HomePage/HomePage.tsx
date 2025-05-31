@@ -113,16 +113,17 @@ const HomePage: React.FC = () => {
             Câu {currentPage}: {question.text}
           </h2>
 
+          {/* Hiển thị hình ảnh nếu có */}
           {question.has_image && question.number === 153 ? (
             <>
               <img
-                src={`${process.env.PUBLIC_URL}/images/153_1.jpg`}
+                src="/hocbanglai/images/153_1.jpg"
                 alt="Câu hỏi 153_1"
                 className="my-2 max-w-full h-auto"
                 onError={(e) => (e.currentTarget.style.display = "none")}
               />
               <img
-                src={`${process.env.PUBLIC_URL}/images/153_2.jpg`}
+                src="/hocbanglai/images/153_2.jpg"
                 alt="Câu hỏi 153_2"
                 className="my-2 max-w-full h-auto"
                 onError={(e) => (e.currentTarget.style.display = "none")}
@@ -130,7 +131,7 @@ const HomePage: React.FC = () => {
             </>
           ) : question.has_image ? (
             <img
-              src={`${process.env.PUBLIC_URL}/images/${question.number}.jpg`}
+              src={`/hocbanglai/images/${question.number}.jpg`}
               alt={`Câu hỏi ${question.number}`}
               className="my-2 max-w-full h-auto"
               onError={(e) => {

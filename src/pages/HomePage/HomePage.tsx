@@ -113,17 +113,16 @@ const HomePage: React.FC = () => {
             Câu {currentPage}: {question.text}
           </h2>
 
-          {/* Hiển thị hình ảnh nếu có */}
           {question.has_image && question.number === 153 ? (
             <>
               <img
-                src="/images/153_1.jpg"
+                src={`${process.env.PUBLIC_URL}/images/153_1.jpg`}
                 alt="Câu hỏi 153_1"
                 className="my-2 max-w-full h-auto"
                 onError={(e) => (e.currentTarget.style.display = "none")}
               />
               <img
-                src="/images/153_2.jpg"
+                src={`${process.env.PUBLIC_URL}/images/153_2.jpg`}
                 alt="Câu hỏi 153_2"
                 className="my-2 max-w-full h-auto"
                 onError={(e) => (e.currentTarget.style.display = "none")}

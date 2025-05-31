@@ -131,7 +131,7 @@ const HomePage: React.FC = () => {
             </>
           ) : question.has_image ? (
             <img
-              src={`/images/${question.number}.jpg`}
+              src={`${process.env.PUBLIC_URL}/images/${question.number}.jpg`}
               alt={`Câu hỏi ${question.number}`}
               className="my-2 max-w-full h-auto"
               onError={(e) => {

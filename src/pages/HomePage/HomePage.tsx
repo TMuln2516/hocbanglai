@@ -53,10 +53,7 @@ const HomePage: React.FC = () => {
       .filter((q) => typeof q.correct_answer === "string")
       .sort((a, b) => a.number - b.number);
 
-    setExam({
-      id: "full-exam",
-      questions: allQuestions,
-    });
+    setExam({ id: "full-exam", questions: allQuestions });
     setAnswers({});
     setCurrentPage(1);
     setActiveTab("question");
@@ -99,7 +96,6 @@ const HomePage: React.FC = () => {
 
     return (
       <>
-        {/* Nút làm lại ở trên câu hỏi */}
         <div className="max-w-3xl mx-auto mb-4 flex justify-center">
           <button
             onClick={handleReset}
@@ -109,7 +105,6 @@ const HomePage: React.FC = () => {
           </button>
         </div>
 
-        {/* Phần nội dung có thể cuộn */}
         <div
           className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-md mb-32 overflow-y-auto"
           style={{ maxHeight: "700px" }}
@@ -118,19 +113,20 @@ const HomePage: React.FC = () => {
             Câu {currentPage}: {question.text}
           </h2>
 
+          {/* Hiển thị hình ảnh nếu có */}
           {question.has_image && question.number === 153 ? (
             <>
               <img
-                src={`/images/153_1.jpg`}
+                src="/images/153_1.jpg"
                 alt="Câu hỏi 153_1"
                 className="my-2 max-w-full h-auto"
-                onError={() => console.warn("Không tải được ảnh: 153_1.jpg")}
+                onError={(e) => (e.currentTarget.style.display = "none")}
               />
               <img
-                src={`/images/153_2.jpg`}
+                src="/images/153_2.jpg"
                 alt="Câu hỏi 153_2"
                 className="my-2 max-w-full h-auto"
-                onError={() => console.warn("Không tải được ảnh: 153_2.jpg")}
+                onError={(e) => (e.currentTarget.style.display = "none")}
               />
             </>
           ) : question.has_image ? (
@@ -138,9 +134,10 @@ const HomePage: React.FC = () => {
               src={`/images/${question.number}.jpg`}
               alt={`Câu hỏi ${question.number}`}
               className="my-2 max-w-full h-auto"
-              onError={() =>
-                console.warn(`Không tải được ảnh: ${question.number}.jpg`)
-              }
+              onError={(e) => {
+                console.warn(`Không tải được ảnh: ${question.number}.jpg`);
+                e.currentTarget.style.display = "none";
+              }}
             />
           ) : null}
 
@@ -148,16 +145,16 @@ const HomePage: React.FC = () => {
             {question.options.map((option, idx) => (
               <label
                 key={idx}
-                className={`block p-3 border rounded cursor-pointer transition 
-      ${
-        selectedAnswer
-          ? option === question.correct_answer
-            ? "bg-green-100 border-green-500 font-bold"
-            : option === selectedAnswer
-            ? "bg-red-100 border-red-500"
-            : "bg-gray-100"
-          : "hover:bg-blue-100"
-      }`}
+                className={`block p-3 border rounded cursor-pointer transition
+                  ${
+                    selectedAnswer
+                      ? option === question.correct_answer
+                        ? "bg-green-100 border-green-500 font-bold"
+                        : option === selectedAnswer
+                        ? "bg-red-100 border-red-500"
+                        : "bg-gray-100"
+                      : "hover:bg-blue-100"
+                  }`}
               >
                 <input
                   type="radio"
@@ -185,7 +182,6 @@ const HomePage: React.FC = () => {
           )}
         </div>
 
-        {/* Nút điều hướng Trang trước - Trang sau cố định dưới cùng */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md py-4 px-8 flex justify-between items-center z-10">
           <button
             onClick={goToPreviousQuestion}
@@ -194,7 +190,6 @@ const HomePage: React.FC = () => {
           >
             Trang trước
           </button>
-
           <button
             onClick={goToNextQuestion}
             disabled={exam ? currentPage === exam.questions.length : true}
@@ -216,30 +211,30 @@ const HomePage: React.FC = () => {
           const userAnswer = answers[q.number];
           const isCurrent = currentPage === idx + 1;
 
-          let baseClass =
-            "w-12 h-12 rounded-full border flex items-center justify-center font-semibold cursor-pointer transition-shadow duration-300";
-
           let buttonClass =
-            "bg-gray-100 text-gray-700 border-gray-300 shadow-sm";
+            "w-12 h-12 rounded-full border flex items-center justify-center font-semibold cursor-pointer transition-shadow duration-300 ";
 
           if (isCurrent) {
-            buttonClass =
+            buttonClass +=
               "bg-blue-600 text-white border-blue-700 shadow-lg shadow-blue-400/50";
           } else if (userAnswer) {
             if (userAnswer === q.correct_answer) {
-              buttonClass =
+              buttonClass +=
                 "bg-green-200 text-green-900 border-green-400 shadow-inner";
             } else {
-              buttonClass =
+              buttonClass +=
                 "bg-red-200 text-red-900 border-red-400 shadow-inner";
             }
+          } else {
+            buttonClass +=
+              "bg-gray-100 text-gray-700 border-gray-300 shadow-sm";
           }
 
           return (
             <button
               key={q.number}
               onClick={() => handleSelectQuestion(idx)}
-              className={`${baseClass} ${buttonClass} hover:scale-110 hover:shadow-lg`}
+              className={`${buttonClass} hover:scale-110 hover:shadow-lg`}
               title={`Câu ${q.number}`}
             >
               {q.number}
@@ -251,7 +246,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col ">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {!exam ? (
         <div className="max-w-3xl mx-auto p-8">
           <h1 className="text-3xl font-bold text-center mb-6 text-blue-800">
@@ -266,7 +261,6 @@ const HomePage: React.FC = () => {
         </div>
       ) : (
         <div className="max-w-3xl w-full">
-          {/* Tab navigation */}
           <div className="flex border-b border-gray-300 mb-4">
             <button
               className={`flex-1 py-3 text-center font-semibold ${
@@ -290,7 +284,6 @@ const HomePage: React.FC = () => {
             </button>
           </div>
 
-          {/* Nội dung tab */}
           {activeTab === "question" ? renderQuestion() : renderQuestionList()}
         </div>
       )}
